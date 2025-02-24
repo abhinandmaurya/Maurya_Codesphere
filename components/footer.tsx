@@ -13,8 +13,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import React from "react";
 
-const socialLinks = [
+// Define types for social links and contact info
+interface SocialLinkType {
+  icon: React.ElementType; // Changed to ElementType
+  label: string;
+  handle: string;
+  href: string;
+}
+
+interface ContactInfoType {
+  icon: React.ElementType; // Changed to ElementType
+  label: string;
+  value: string;
+  href?: string;
+}
+
+const socialLinks: SocialLinkType[] = [
   {
     icon: Linkedin,
     label: "Linkedin",
@@ -25,17 +41,17 @@ const socialLinks = [
     icon: Twitter,
     label: "Twitter",
     handle: "@Maurya_Codesphere",
-    href: "https://twitter.com",
+    href: "https://x.com/MCodesphere",
   },
   {
     icon: Facebook,
     label: "Facebook",
     handle: "@Maurya_Codesphere",
-    href: "https://facebook.com",
+    href: "https://www.facebook.com/profile.php?id=61573744792805",
   },
 ];
 
-const contactInfo = [
+const contactInfo: ContactInfoType[] = [
   {
     icon: Mail,
     label: "Email",
@@ -55,7 +71,71 @@ const contactInfo = [
   },
 ];
 
-const Footer = () => {
+const SocialLink: React.FC<{ social: SocialLinkType; index: number }> =
+  React.memo(({ social, index }) => {
+    const { icon: Icon, label, handle, href } = social;
+    return (
+      <motion.a
+        key={label}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-between p-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 transition-colors duration-200 w-full max-w-[300px] mx-auto sm:mx-0"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.1 }}
+        whileHover={{ scale: 1.02 }}
+      >
+        <div className="flex items-center gap-2 min-w-0">
+          <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-[#CCFF00] flex-shrink-0" />
+          <div className="min-w-0">
+            <p className="font-medium text-xs sm:text-sm truncate">{label}</p>
+            <p className="text-xs text-zinc-400 truncate hidden sm:block">
+              {handle}
+            </p>
+          </div>
+        </div>
+        <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-[#CCFF00] flex-shrink-0" />
+      </motion.a>
+    );
+  });
+
+const ContactInfo: React.FC<{ info: ContactInfoType; index: number }> =
+  React.memo(({ info, index }) => {
+    const { icon: Icon, label, value, href } = info;
+    return (
+      <motion.div
+        key={label}
+        className="flex items-start gap-3 sm:gap-4"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: index * 0.1 }}
+      >
+        <div className="p-2 sm:p-3 rounded-full bg-zinc-900 flex-shrink-0">
+          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#CCFF00]" />
+        </div>
+        <div className="min-w-0">
+          <h3 className="text-base sm:text-lg font-medium text-[#CCFF00]">
+            {label}
+          </h3>
+          {href ? (
+            <a
+              href={href}
+              className="text-zinc-400 hover:text-[#CCFF00] transition-colors duration-200 text-sm sm:text-base break-words"
+            >
+              {value}
+            </a>
+          ) : (
+            <p className="text-zinc-400 text-sm sm:text-base break-words">
+              {value}
+            </p>
+          )}
+        </div>
+      </motion.div>
+    );
+  });
+
+const Footer: React.FC = () => {
   return (
     <footer className="bg-black text-white py-8 md:py-16 w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,64 +144,14 @@ const Footer = () => {
             {/* Social Links */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {socialLinks.map((social, index) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 transition-colors duration-200 w-full max-w-[300px] mx-auto sm:mx-0"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <social.icon className="w-4 h-4 sm:w-5 sm:h-5 text-[#CCFF00] flex-shrink-0" />
-                    <div className="min-w-0">
-                      <p className="font-medium text-xs sm:text-sm truncate">
-                        {social.label}
-                      </p>
-                      <p className="text-xs text-zinc-400 truncate hidden sm:block">
-                        {social.handle}
-                      </p>
-                    </div>
-                  </div>
-                  <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-[#CCFF00] flex-shrink-0" />
-                </motion.a>
+                <SocialLink key={social.label} social={social} index={index} />
               ))}
             </div>
 
             {/* Contact Information */}
             <div className="space-y-4 sm:space-y-6">
               {contactInfo.map((info, index) => (
-                <motion.div
-                  key={info.label}
-                  className="flex items-start gap-3 sm:gap-4"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <div className="p-2 sm:p-3 rounded-full bg-zinc-900 flex-shrink-0">
-                    <info.icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#CCFF00]" />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="text-base sm:text-lg font-medium text-[#CCFF00]">
-                      {info.label}
-                    </h3>
-                    {info.href ? (
-                      <a
-                        href={info.href}
-                        className="text-zinc-400 hover:text-[#CCFF00] transition-colors duration-200 text-sm sm:text-base break-words"
-                      >
-                        {info.value}
-                      </a>
-                    ) : (
-                      <p className="text-zinc-400 text-sm sm:text-base break-words">
-                        {info.value}
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
+                <ContactInfo key={info.label} info={info} index={index} />
               ))}
             </div>
           </div>

@@ -1,9 +1,7 @@
 import { motion } from "framer-motion";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, memo } from "react";
 
-const Features = lazy(() => Promise.resolve({ default: FeaturesComponent }));
-
-function FeaturesComponent() {
+const FeaturesComponent = memo(() => {
   const fadeInVariants = {
     hidden: { opacity: 0, x: -20 },
     visible: {
@@ -42,36 +40,22 @@ function FeaturesComponent() {
             viewport={{ once: true, margin: "-100px" }}
             className="space-y-6"
           >
-            <h2
-              className="text-[#CCFF00] text-lg font-semibold tracking-wide uppercase"
-              style={{
-                textRendering: "optimizeLegibility",
-                WebkitFontSmoothing: "antialiased",
-                MozOsxFontSmoothing: "grayscale",
-              }}
-            >
+            <h2 className="text-[#CCFF00] text-lg font-semibold tracking-wide uppercase">
               Our Features
             </h2>
-            <h1
-              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white"
-              style={{
-                textRendering: "optimizeLegibility",
-                WebkitFontSmoothing: "antialiased",
-                MozOsxFontSmoothing: "grayscale",
-              }}
-            >
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white">
               What Sets Maurya CodeSphere Apart
             </h1>
-            <p
-              className="text-base md:text-lg text-gray-400 max-w-2xl"
-              style={{
-                textRendering: "optimizeLegibility",
-                WebkitFontSmoothing: "antialiased",
-                MozOsxFontSmoothing: "grayscale",
-              }}
-            >
-              Explore the exceptional features that make LandFree your ultimate
-              web development choice.
+            <p className="text-base md:text-lg text-gray-400 max-w-2xl">
+              Are you a digital agency services or technology company looking
+              for a partner in the evolving web development & business marketing
+              space? <br /> ColorWhistle will be perfect for you. Over the
+              years, we have developed a white label partnership with many
+              digital agencies in USA, UK and delivered the highest quality of
+              web design, web development, application development, and digital
+              marketing technology services. By creating a B2B partnership with
+              industry leaders, we have strengthened our ability to offer
+              best-in-class web technology services and solutions.
             </p>
           </motion.div>
 
@@ -93,7 +77,7 @@ function FeaturesComponent() {
                 className="rounded-lg w-full h-full object-cover"
                 loading="lazy"
                 decoding="async"
-                {...({ fetchpriority: "high" } as any)}
+                fetchPriority="high"
               />
             </picture>
           </motion.div>
@@ -101,7 +85,9 @@ function FeaturesComponent() {
       </div>
     </section>
   );
-}
+});
+
+const Features = lazy(() => Promise.resolve({ default: FeaturesComponent }));
 
 export default function FeaturesWithSuspense() {
   return (

@@ -1,8 +1,24 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const testimonials = [
+// Define the type for a single testimonial
+interface TestimonialType {
+  id: number;
+  name: string;
+  title: string;
+  quote: string;
+  date: string;
+  image: string;
+}
+
+// Define the props for the TestimonialCard component
+interface TestimonialCardProps {
+  testimonial: TestimonialType;
+}
+
+const testimonials: TestimonialType[] = [
   {
+    id: 1,
     name: "Anuj Panchal",
     title: "Founder of Anmol Poultry Farm",
     quote:
@@ -11,6 +27,7 @@ const testimonials = [
     image: "https://picsum.photos/120/120?random=1",
   },
   {
+    id: 2,
     name: "Harikesh Kashyap",
     title: "Founder of Ai Digital Info",
     quote:
@@ -19,6 +36,7 @@ const testimonials = [
     image: "https://picsum.photos/120/120?random=2",
   },
   {
+    id: 3,
     name: "Vishal Dangi",
     title: "Founder of Somya Engineers",
     quote:
@@ -59,7 +77,71 @@ const containerVariants = {
   },
 };
 
-function Testimonial() {
+// TestimonialCard component with props type
+const TestimonialCard: React.FC<TestimonialCardProps> = React.memo(
+  ({ testimonial }) => {
+    const { id, name, title, quote, date, image } = testimonial;
+
+    return (
+      <motion.div
+        key={id}
+        className="bg-black p-6 rounded-xl shadow-lg max-w-sm mx-auto border border-gray-800 hover:bg-gray-850 transition-colors duration-300"
+        variants={cardVariants}
+        initial="hidden"
+        whileInView="visible"
+        whileHover="hover"
+        viewport={{ once: true }}
+      >
+        <div className="flex items-center mb-6">
+          <motion.img
+            src={image}
+            alt={`${name}'s profile`}
+            className="w-14 h-14 rounded-full mr-5 object-cover"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.1 * id, duration: 0.5 }}
+          />
+          <div>
+            <motion.h3
+              className="text-white text-xl font-semibold"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.2 * id, duration: 0.5 }}
+            >
+              {name}
+            </motion.h3>
+            <motion.p
+              className="text-gray-400 text-base"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3 * id, duration: 0.5 }}
+            >
+              {title}
+            </motion.p>
+          </div>
+        </div>
+        <motion.p
+          className="text-gray-300 text-base leading-relaxed"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4 * id, duration: 0.6 }}
+        >
+          {quote}
+        </motion.p>
+        <motion.p
+          className="text-gray-500 text-sm mt-6"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5 * id, duration: 0.6 }}
+        >
+          {date}
+        </motion.p>
+      </motion.div>
+    );
+  }
+);
+
+const Testimonial: React.FC = () => {
   return (
     <div className="bg-black min-h-screen py-16 px-4 overflow-hidden">
       <motion.div
@@ -87,66 +169,13 @@ function Testimonial() {
           our clients say.
         </motion.p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={index}
-              className="bg-gray-900 p-6 rounded-xl shadow-lg max-w-sm mx-auto border border-gray-800 hover:bg-gray-850 transition-colors duration-300"
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              whileHover="hover"
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center mb-6">
-                <motion.img
-                  src={testimonial.image}
-                  alt={`${testimonial.name}`}
-                  className="w-14 h-14 rounded-full mr-5 object-cover"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.1 * index, duration: 0.5 }}
-                />
-                <div>
-                  <motion.h3
-                    className="text-white text-xl font-semibold"
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.2 * index, duration: 0.5 }}
-                  >
-                    {testimonial.name}
-                  </motion.h3>
-                  <motion.p
-                    className="text-gray-400 text-base"
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.3 * index, duration: 0.5 }}
-                  >
-                    {testimonial.title}
-                  </motion.p>
-                </div>
-              </div>
-              <motion.p
-                className="text-gray-300 text-base leading-relaxed"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4 * index, duration: 0.6 }}
-              >
-                {testimonial.quote}
-              </motion.p>
-              <motion.p
-                className="text-gray-500 text-sm mt-6"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 * index, duration: 0.6 }}
-              >
-                {testimonial.date}
-              </motion.p>
-            </motion.div>
+          {testimonials.map((testimonial) => (
+            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
         </div>
       </motion.div>
     </div>
   );
-}
+};
 
 export default Testimonial;

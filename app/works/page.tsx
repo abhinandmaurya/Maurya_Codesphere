@@ -3,9 +3,19 @@
 import { Navigation } from "@/components/navigation";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
-const works = [
+// Types
+interface Work {
+  title: string;
+  category: string;
+  image: string;
+  description: string;
+  technologies: string[];
+}
+
+// Data
+const works: Work[] = [
   {
     title: "Luxury Fashion Store",
     category: "E-commerce",
@@ -109,16 +119,38 @@ const works = [
   },
 ];
 
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export default function Works() {
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState<string>("All");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const categories = [
-    "All",
-    ...Array.from(new Set(works.map((work) => work.category))),
-  ];
-  const filteredWorks =
-    filter === "All" ? works : works.filter((work) => work.category === filter);
+  const categories = useMemo(
+    () => ["All", ...Array.from(new Set(works.map((work) => work.category)))],
+    []
+  );
+
+  const filteredWorks = useMemo(
+    () =>
+      filter === "All"
+        ? works
+        : works.filter((work) => work.category === filter),
+    [filter]
+  );
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -127,50 +159,54 @@ export default function Works() {
       <main className="pt-32 pb-16">
         <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            variants={itemVariants}
+            initial="hidden"
+            animate="visible"
             className="text-center mb-16"
           >
-            <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#CCFF00] to-[#99FF33]">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#CCFF00] to-[#99FF33]">
               Our Portfolio
             </h1>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
               Discover our cutting-edge digital solutions crafted for innovative
               businesses worldwide
             </p>
           </motion.div>
 
           <motion.div
+            variants={itemVariants}
+            initial="hidden"
+            animate="visible"
             className="flex flex-wrap justify-center gap-4 mb-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
           >
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setFilter(category)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-full text-sm md:text-base font-medium transition-colors duration-300 ${
                   filter === category
                     ? "bg-[#cbff00] text-black"
                     : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-[#CCFF00]"
                 }`}
+                aria-pressed={filter === category}
               >
                 {category}
               </button>
             ))}
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {filteredWorks.map((work, index) => (
               <motion.div
                 key={work.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                onHoverStart={() => setHoveredIndex(index)}
-                onHoverEnd={() => setHoveredIndex(null)}
+                variants={itemVariants}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
                 className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-[#CCFF00]/20"
               >
                 <div className="relative aspect-[4/3]">
@@ -178,17 +214,23 @@ export default function Works() {
                     src={work.image}
                     alt={work.title}
                     fill
-                    className="object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading={index > 5 ? "lazy" : "eager"}
+                    priority={index <= 2}
                   />
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent flex flex-col justify-end p-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: hoveredIndex === index ? 1 : 0 }}
+                    className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent flex flex-col justify-end p-4 sm:p-6"
+                    animate={{ opacity: hoveredIndex === index ? 1 : 0.5 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <h3 className="text-2xl font-bold mb-2">{work.title}</h3>
-                    <p className="text-[#cbff00] mb-2">{work.category}</p>
-                    <p className="text-sm text-gray-300 mb-4">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-2">
+                      {work.title}
+                    </h3>
+                    <p className="text-[#cbff00] text-sm md:text-base mb-2">
+                      {work.category}
+                    </p>
+                    <p className="text-xs sm:text-sm text-gray-300 mb-4 line-clamp-2">
                       {work.description}
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -205,7 +247,7 @@ export default function Works() {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </main>
     </div>

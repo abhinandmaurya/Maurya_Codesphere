@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, memo } from "react";
 import { Navigation } from "@/components/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronDown } from "lucide-react";
 
-// Constants
+// Constants with proper typing
 const PLANS = [
   {
     name: "Basic Website",
@@ -49,22 +49,20 @@ const FAQS = [
   {
     question: "What’s included in the price?",
     answer:
-      "All packages include design, development, and initial support tailored to your plan. Additional features depend on the chosen tier.",
+      "All packages include design, development, and initial support tailored to your plan.",
   },
   {
     question: "Do you offer payment plans?",
-    answer:
-      "Yes, we provide flexible payment options based on project scope and timeline.",
+    answer: "Yes, we provide flexible payment options based on project scope.",
   },
   {
     question: "How long does a project take?",
     answer:
-      "Timelines vary: small sites take 2-4 weeks, e-commerce 6-10 weeks, and custom projects are scoped individually.",
+      "Small sites: 2-4 weeks, e-commerce: 6-10 weeks, custom projects vary.",
   },
   {
     question: "Can I request custom features?",
-    answer:
-      "Absolutely! Our custom tier is designed for unique needs, and we can tailor any package with a quote.",
+    answer: "Yes! We can tailor any package with a custom quote.",
   },
 ] as const;
 
@@ -76,91 +74,82 @@ const TESTIMONIALS = [
   },
 ] as const;
 
-// Animation Variants
+// Animation Variants with optimized settings
 const animationVariants = {
   section: {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  },
-  item: {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
+    visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, delay: i * 0.1 },
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
+  },
+  item: {
+    hidden: { opacity: 0 },
+    visible: (i: number) => ({
+      opacity: 1,
+      transition: { duration: 0.4, delay: i * 0.1, ease: "easeOut" },
     }),
   },
   answer: {
-    hidden: { opacity: 0, height: 0, marginTop: 0 },
-    visible: {
-      opacity: 1,
-      height: "auto",
-      marginTop: "1rem",
-      transition: { duration: 0.4, ease: "easeInOut" },
-    },
-    exit: {
-      opacity: 0,
-      height: 0,
-      marginTop: 0,
-      transition: { duration: 0.3, ease: "easeInOut" },
-    },
+    hidden: { opacity: 0, height: 0 },
+    visible: { opacity: 1, height: "auto", transition: { duration: 0.3 } },
   },
 };
 
-// Components
-const PricingCard = ({
-  plan,
-  index,
-}: {
-  plan: (typeof PLANS)[number];
-  index: number;
-}) => (
-  <motion.div
-    custom={index}
-    variants={animationVariants.item}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true, amount: 0.2 }}
-    className="bg-white/5 backdrop-blur-lg rounded-xl p-6 hover:bg-white/10 transition-colors duration-300"
-  >
-    <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-    <div className="text-2xl font-bold text-[#CCFF00] mb-2">{plan.price}</div>
-    <p className="text-gray-400 mb-6">{plan.description}</p>
-    <ul className="space-y-3 mb-8">
-      {plan.features.map((feature) => (
-        <li key={feature} className="flex items-center">
-          <Check className="w-5 h-5 text-[#CCFF00] mr-2 flex-shrink-0" />
-          <span>{feature}</span>
-        </li>
-      ))}
-    </ul>
-    <Button className="w-full bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90">
-      {plan.price === "Custom Quote" ? "Request a Quote" : "Get Started"}
-    </Button>
-  </motion.div>
+// Memoized Components
+const PricingCard = memo(
+  ({ plan, index }: { plan: (typeof PLANS)[number]; index: number }) => (
+    <motion.div
+      custom={index}
+      variants={animationVariants.item}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      className="rounded-xl p-6 bg-white/5 hover:bg-white/10 transition-colors"
+      whileHover={{ scale: 1.02 }}
+    >
+      <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+      <p className="text-2xl font-bold text-[#CCFF00] mb-2">{plan.price}</p>
+      <p className="text-gray-400 mb-6">{plan.description}</p>
+      <ul className="space-y-3 mb-8">
+        {plan.features.map((feature) => (
+          <li key={feature} className="flex items-start">
+            <Check className="w-5 h-5 text-[#CCFF00] mr-2 mt-0.5 flex-shrink-0" />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+      <Button className="w-full bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90">
+        {plan.price === "Custom Quote" ? "Request Quote" : "Get Started"}
+      </Button>
+    </motion.div>
+  )
 );
 
-const TestimonialCard = ({
-  testimonial,
-  index,
-}: {
-  testimonial: (typeof TESTIMONIALS)[number];
-  index: number;
-}) => (
-  <motion.div
-    custom={index}
-    variants={animationVariants.item}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true, amount: 0.2 }}
-    className="bg-white/5 backdrop-blur-lg rounded-xl p-6"
-  >
-    <p className="italic text-gray-300 mb-2">"{testimonial.quote}"</p>
-    <p className="font-semibold text-[#CCFF00]">{testimonial.author}</p>
-  </motion.div>
+const TestimonialCard = memo(
+  ({
+    testimonial,
+    index,
+  }: {
+    testimonial: (typeof TESTIMONIALS)[number];
+    index: number;
+  }) => (
+    <motion.div
+      custom={index}
+      variants={animationVariants.item}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      className="rounded-xl p-6 bg-white/5"
+    >
+      <p className="italic text-gray-300 mb-2">"{testimonial.quote}"</p>
+      <p className="font-semibold text-[#CCFF00]">{testimonial.author}</p>
+    </motion.div>
+  )
 );
 
-const FAQSection = () => {
+const FAQSection = memo(() => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const toggleFAQ = useCallback((index: number) => {
     setOpenIndex((prev) => (prev === index ? null : index));
@@ -179,146 +168,121 @@ const FAQSection = () => {
       </h2>
       <div className="max-w-4xl mx-auto space-y-4">
         {FAQS.map((faq, index) => (
-          <motion.div
+          <div
             key={faq.question}
-            custom={index}
-            variants={animationVariants.item}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-colors duration-300 cursor-pointer"
+            className="rounded-xl p-6 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer"
             onClick={() => toggleFAQ(index)}
           >
             <div className="flex justify-between items-center">
               <h3 className="text-xl font-semibold">{faq.question}</h3>
               <motion.div
                 animate={{ rotate: openIndex === index ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
               >
                 <ChevronDown className="w-6 h-6 text-[#CCFF00]" />
               </motion.div>
             </div>
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               {openIndex === index && (
                 <motion.p
+                  key={faq.answer}
                   variants={animationVariants.answer}
                   initial="hidden"
                   animate="visible"
-                  exit="exit"
-                  className="text-gray-400"
+                  exit="hidden"
+                  className="text-gray-400 mt-4"
                 >
                   {faq.answer}
                 </motion.p>
               )}
             </AnimatePresence>
-          </motion.div>
+          </div>
         ))}
       </div>
     </motion.section>
   );
-};
+});
 
-// Main Component
+// Main Component with lazy loading
 export default function Pricing() {
   return (
     <div className="min-h-screen bg-black text-white">
       <Navigation />
-      <main className="pt-32 pb-16">
-        <div className="container mx-auto px-4">
-          <motion.section
-            variants={animationVariants.section}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Pricing Plans
-            </h1>
-            <p className="text-xl text-gray-400 mb-4">
-              Affordable, transparent pricing for top-tier web development.
-            </p>
-            <p className="text-lg text-gray-300">
-              Expert craftsmanship, fast delivery, and responsive designs
-              tailored to your needs.
-            </p>
-          </motion.section>
+      <main className="container mx-auto px-4 pt-32 pb-16">
+        <motion.section
+          variants={animationVariants.section}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-4xl md:text-5xl text-[#CCFF00] font-bold mb-4">
+            Pricing Plans
+          </h1>
+          <p className="text-xl text-gray-400 mb-4">
+            Affordable pricing for top-tier web development
+          </p>
+          <p className="text-lg text-gray-300">
+            Expert craftsmanship and responsive designs
+          </p>
+        </motion.section>
 
-          <motion.section
-            variants={animationVariants.section}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16"
-          >
-            {PLANS.map((plan, index) => (
-              <PricingCard key={plan.name} plan={plan} index={index} />
-            ))}
-          </motion.section>
+        <section className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
+          {PLANS.map((plan, index) => (
+            <PricingCard key={plan.name} plan={plan} index={index} />
+          ))}
+        </section>
 
-          <motion.section
-            variants={animationVariants.section}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl font-bold mb-4">
-              How We Price Your Project
-            </h2>
-            <p className="text-gray-400 max-w-3xl mx-auto">
-              We offer flexible pricing: <strong>Hourly Rates</strong> for
-              evolving projects, <strong>Flat Rates</strong> for defined scopes,
-              and <strong>Retainers</strong> for ongoing support. Reach out for
-              a personalized quote with no hidden fees.
-            </p>
-          </motion.section>
+        <motion.section
+          variants={animationVariants.section}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl font-bold mb-4">How We Price</h2>
+          <p className="text-gray-400 max-w-3xl mx-auto">
+            Flexible pricing: <strong>Hourly Rates</strong>,{" "}
+            <strong>Flat Rates</strong>, or <strong>Retainers</strong>. Get a
+            personalized quote.
+          </p>
+        </motion.section>
 
-          <motion.section
-            variants={animationVariants.section}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mb-16"
-          >
-            <h2 className="text-3xl font-bold text-center mb-8">
-              What Our Clients Say
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {TESTIMONIALS.map((testimonial, index) => (
-                <TestimonialCard
-                  key={testimonial.author}
-                  testimonial={testimonial}
-                  index={index}
-                />
-              ))}
-            </div>
-          </motion.section>
+        <section className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
+          <h2 className="text-3xl font-bold text-center mb-8 col-span-full">
+            Client Testimonials
+          </h2>
+          {TESTIMONIALS.map((testimonial, index) => (
+            <TestimonialCard
+              key={testimonial.author}
+              testimonial={testimonial}
+              index={index}
+            />
+          ))}
+        </section>
 
-          <FAQSection />
+        <FAQSection />
 
-          <motion.section
-            variants={animationVariants.section}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center"
-          >
-            <h2 className="text-3xl font-bold mb-4">Ready to Start?</h2>
-            <p className="text-lg text-gray-400 mb-6">
-              Contact us for a custom quote or choose a package today.
-            </p>
-            <Button className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 text-lg py-3 px-6">
-              Request a Quote
-            </Button>
-          </motion.section>
-        </div>
+        <motion.section
+          variants={animationVariants.section}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <h2 className="text-3xl font-bold mb-4">Ready to Start?</h2>
+          <Button className="bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 text-lg py-3 px-6">
+            Request Quote
+          </Button>
+        </motion.section>
       </main>
       <footer className="bg-white/5 text-center py-6">
-        <p className="text-gray-400">
-          © 2025 Maurya CodeSphere. All rights reserved.
-        </p>
+        <p className="text-gray-400">© 2025 Maurya CodeSphere</p>
       </footer>
     </div>
   );
 }
+
+PricingCard.displayName = "PricingCard";
+TestimonialCard.displayName = "TestimonialCard";
+FAQSection.displayName = "FAQSection";

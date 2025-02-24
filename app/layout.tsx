@@ -2,31 +2,32 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AnimatedBackground } from "@/components/animated-background";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://landfree.com"),
+  metadataBase: new URL("https://mauryacodesphere.com"),
   title: {
-    default: "Maurya Codesphere - Elevate Your Online Business",
+    default: "Maurya Codesphere - Elevate Your Online Presence",
     template: "%s | Maurya Codesphere",
   },
   description:
-    "Maurya Codesphere simplifies the explanation of your business, services, and pricing, making it easily understandable. Create stunning websites with our professional templates.",
+    "Maurya Codesphere helps you build stunning, high-performance websites with ease. Elevate your online business today with our professional templates.",
   keywords: [
     "business template",
-    "landing page",
-    "web design",
-    "online business",
-    "website builder",
-    "professional templates",
-    "business website",
-    "responsive design",
-    "modern templates",
-    "custom website",
+    "landing page design",
+    "website development",
+    "AI-powered website builder",
+    "SEO-friendly websites",
+    "custom website development",
+    "responsive business website",
+    "modern web templates",
+    "professional website builder",
+    "best web design services",
   ],
-  authors: [{ name: "Abhinand Maurya", url: "https://landfree.com" }],
-  creator: "Abhinand Maurya",
+  authors: [{ name: "Maurya Codesphere", url: "https://mauryacodesphere.com" }],
+  creator: "Maurya Codesphere",
   publisher: "Maurya Codesphere",
   formatDetection: {
     email: false,
@@ -40,14 +41,14 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Maurya Codesphere - Elevate Your Online Business",
+    title: "Maurya Codesphere - Elevate Your Online Presence",
     description:
-      "Maurya Codesphere simplifies the explanation of your business, services, and pricing, making it easily understandable.",
-    url: "",
+      "Maurya Codesphere helps you build high-performance websites effortlessly. Grow your online business with our professional web templates.",
+    url: "https://mauryacodesphere.com",
     siteName: "Maurya Codesphere",
     images: [
       {
-        url: "https://landfree.com/og-image.jpg",
+        url: "https://mauryacodesphere.com/images/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Maurya Codesphere - Professional Website Templates",
@@ -58,15 +59,16 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Maurya Codesphere - Elevate Your Online Business",
+    title: "Maurya Codesphere - Elevate Your Online Presence",
     description:
-      "Maurya Codesphere simplifies the explanation of your business, services, and pricing, making it easily understandable.",
-    creator: "@Maurya Codesphere",
-    images: ["https://landfree.com/twitter-image.jpg"],
+      "Maurya Codesphere simplifies web development with AI-powered solutions and modern design templates.",
+    creator: "@MauryaCodesphere",
+    images: ["https://mauryacodesphere.com/images/twitter-image.jpg"],
   },
   robots: {
     index: true,
     follow: true,
+    noimageindex: false,
     googleBot: {
       index: true,
       follow: true,
@@ -99,9 +101,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="dark">
       <head>
-        <link rel="canonical" href="https://landfree.com" />
+        <link rel="canonical" href="https://mauryacodesphere.com" />
         <meta name="theme-color" content="#000000" />
         <script
           type="application/ld+json"
@@ -109,13 +111,18 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "LandFree",
-              url: "https://landfree.com",
-              logo: "https://landfree.com/logo.png",
+              name: "Maurya Codesphere",
+              url: "https://mauryacodesphere.com",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://mauryacodesphere.com/logo.png",
+                height: 500,
+                width: 500,
+              },
               sameAs: [
-                "https://twitter.com/landfree",
-                "https://linkedin.com/company/landfree",
-                "https://github.com/landfree",
+                "https://twitter.com/mauryacodesphere",
+                "https://linkedin.com/company/mauryacodesphere",
+                "https://github.com/mauryacodesphere",
               ],
               contactPoint: {
                 "@type": "ContactPoint",
@@ -123,18 +130,31 @@ export default function RootLayout({
                 contactType: "customer service",
                 availableLanguage: ["English"],
               },
+              location: {
+                "@type": "Place",
+                address: {
+                  "@type": "PostalAddress",
+                  streetAddress: "Your Business Address",
+                  addressLocality: "City",
+                  postalCode: "ZIP Code",
+                  addressCountry: "Country",
+                },
+              },
             }),
           }}
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} relative min-h-screen antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AnimatedBackground />
+          <div className="relative z-10 flex min-h-screen flex-col">
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>

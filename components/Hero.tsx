@@ -2,7 +2,46 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import Image from "next/image";
+
+interface FloatingTextProps {
+  text: string;
+  duration: number;
+  direction: "left" | "right" | "up" | "down";
+  initialX?: number;
+  initialY?: number;
+}
+
+const FloatingText: React.FC<FloatingTextProps> = ({
+  text,
+  duration,
+  direction,
+  initialX = 0,
+  initialY = 0,
+}) => {
+  const rotateDirection = direction === "left" ? [0, -360] : [0, 360];
+  const translateY = direction === "up" ? [0, -20, 0] : [0, 20, 0];
+  const translateX = direction === "left" ? [0, -20, 0] : [0, 20, 0];
+
+  return (
+    <motion.div
+      initial={{ x: initialX, y: initialY }}
+      animate={{
+        rotate: rotateDirection,
+        y: translateY,
+        x: translateX,
+        scale: [1, 1.1, 1],
+      }}
+      transition={{
+        duration,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+      className="absolute text-[#cbff00] opacity-70 text-3xl font-bold"
+    >
+      {text}
+    </motion.div>
+  );
+};
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -17,16 +56,13 @@ const stagger = {
   },
 };
 
+const navItems = ["Services", "Features", "About", "Pricing", "Works"];
+
 export default function Hero() {
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      {/* Grid Background */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d1d1d_1px,transparent_1px),linear-gradient(to_bottom,#1d1d1d_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
-
-      {/* Radial Gradient */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-[radial-gradient(circle,rgba(203,255,0,0.15)_0%,transparent_70%)]" />
-
-      {/* Navigation */}
       <nav className="relative z-10 flex items-center justify-between px-8 py-5">
         <div className="flex items-center gap-2">
           <motion.div
@@ -38,7 +74,6 @@ export default function Hero() {
           </motion.div>
           <span className="text-xl font-semibold">LandFree</span>
         </div>
-
         <div className="flex items-center gap-8">
           <motion.div
             variants={stagger}
@@ -46,18 +81,16 @@ export default function Hero() {
             animate="visible"
             className="flex items-center gap-8"
           >
-            {["Services", "Features", "About", "Pricing", "Works"].map(
-              (item) => (
-                <motion.a
-                  key={item}
-                  href="#"
-                  variants={fadeIn}
-                  className="text-sm hover:text-[#cbff00] transition-colors"
-                >
-                  {item}
-                </motion.a>
-              )
-            )}
+            {navItems.map((item) => (
+              <motion.a
+                key={item}
+                href="#"
+                variants={fadeIn}
+                className="text-sm hover:text-[#cbff00] transition-colors"
+              >
+                {item}
+              </motion.a>
+            ))}
           </motion.div>
           <motion.button
             initial={{ opacity: 0, x: 20 }}
@@ -70,8 +103,6 @@ export default function Hero() {
           </motion.button>
         </div>
       </nav>
-
-      {/* Hero Content */}
       <main className="relative z-10 flex flex-col items-center justify-center text-center px-4 mt-20">
         <motion.h1
           variants={fadeIn}
@@ -80,9 +111,8 @@ export default function Hero() {
           transition={{ delay: 0.2 }}
           className="text-6xl font-bold leading-tight max-w-4xl mb-6"
         >
-          Elevate Your Online Business with this Template
+          Web Development Company & Digital Agency
         </motion.h1>
-
         <motion.p
           variants={fadeIn}
           initial="hidden"
@@ -90,10 +120,9 @@ export default function Hero() {
           transition={{ delay: 0.4 }}
           className="text-lg text-gray-400 max-w-2xl mb-12"
         >
-          Maurya Codesphere simplifies the explanation of your business,
-          services, and pricing, making it easily understandable.
+          ONE STOP FOR CUSTOM WEBSITE DEVELOPMENT, WHITE LABEL DIGITAL AGENCY
+          SERVICES FROM INDIA
         </motion.p>
-
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -107,7 +136,6 @@ export default function Hero() {
             Get this Template
             <ArrowRight className="w-4 h-4" />
           </motion.button>
-
           <motion.a
             variants={fadeIn}
             href="#"
@@ -117,67 +145,41 @@ export default function Hero() {
             <ArrowRight className="w-4 h-4" />
           </motion.a>
         </motion.div>
-
-        {/* Floating Elements */}
-        <motion.div
-          animate={{
-            rotate: [0, 360],
-            y: [0, -10, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="absolute top-1/4 left-1/4 text-[#cbff00] opacity-30"
-        >
-          Innovation
-        </motion.div>
-
-        <motion.div
-          animate={{
-            rotate: [0, -360],
-            y: [0, 10, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="absolute top-1/4 right-1/4 text-[#cbff00] opacity-30"
-        >
-          Creativity
-        </motion.div>
-
-        <motion.div
-          animate={{
-            rotate: [0, 360],
-            x: [0, -10, 0],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="absolute bottom-1/4 left-1/4 text-[#cbff00] opacity-30"
-        >
-          Creation
-        </motion.div>
-
-        <motion.div
-          animate={{
-            rotate: [0, -360],
-            x: [0, 10, 0],
-          }}
-          transition={{
-            duration: 22,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          className="absolute bottom-1/4 right-1/4 text-[#cbff00] opacity-30"
-        >
-          Perspective
-        </motion.div>
+        <FloatingText
+          text="use client"
+          duration={16}
+          direction="left"
+          initialX={-200}
+          initialY={-100}
+        />
+        <FloatingText
+          text="Innovation"
+          duration={20}
+          direction="left"
+          initialX={100}
+          initialY={-50}
+        />
+        <FloatingText
+          text="Creativity"
+          duration={15}
+          direction="right"
+          initialX={-150}
+          initialY={50}
+        />
+        <FloatingText
+          text="Creation"
+          duration={18}
+          direction="up"
+          initialX={200}
+          initialY={100}
+        />
+        <FloatingText
+          text="Perspective"
+          duration={22}
+          direction="down"
+          initialX={0}
+          initialY={150}
+        />
       </main>
     </div>
   );

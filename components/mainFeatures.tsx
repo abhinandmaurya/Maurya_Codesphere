@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import {
   Smartphone,
   LayoutGrid,
@@ -11,55 +12,60 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-const mainFeatures = [
-  {
-    icon: <Smartphone className="w-6 h-6" />,
-    title: "Responsive and Mobile-First Design",
-    description: "Fully responsive websites that work perfectly on all devices",
-  },
-  {
-    icon: <LayoutGrid className="w-6 h-6" />,
-    title: "Seamless Content Management Systems",
-    description: "Easy-to-use CMS for managing your website content",
-  },
-  {
-    icon: <BarChart3 className="w-6 h-6" />,
-    title: "Interactive Web Applications Solutions",
-    description: "Dynamic and engaging web applications",
-  },
-  {
-    icon: <Wrench className="w-6 h-6" />,
-    title: "Ongoing Maintenance and Support",
-    description: "Continuous support to keep your website running smoothly",
-  },
-  {
-    icon: <Globe className="w-6 h-6" />,
-    title: "Multilingual Website Development",
-    description: "Reach global audiences with multi-language support",
-  },
-  {
-    icon: <Zap className="w-6 h-6" />,
-    title: "Performance Optimization",
-    description: "Lightning-fast websites with optimized load times",
-  },
-  {
-    icon: <Shield className="w-6 h-6" />,
-    title: "Advanced Security Implementation",
-    description: "Robust security measures to protect your digital assets",
-  },
-  {
-    icon: <Palette className="w-6 h-6" />,
-    title: "Custom UI/UX Design",
-    description: "Unique, user-centered designs tailored to your brand",
-  },
-  {
-    icon: <Rocket className="w-6 h-6" />,
-    title: "E-commerce Solutions",
-    description: "Powerful online stores with seamless checkout experiences",
-  },
-];
+const MainFeatures = React.memo(() => {
+  const mainFeatures = useMemo(
+    () => [
+      {
+        icon: <Smartphone className="w-6 h-6" aria-label="Smartphone Icon" />,
+        title: "Responsive and Mobile-First Design",
+        description:
+          "Fully responsive websites that work perfectly on all devices",
+      },
+      {
+        icon: <LayoutGrid className="w-6 h-6" aria-label="Layout Grid Icon" />,
+        title: "Seamless Content Management Systems",
+        description: "Easy-to-use CMS for managing your website content",
+      },
+      {
+        icon: <BarChart3 className="w-6 h-6" aria-label="Bar Chart Icon" />,
+        title: "Interactive Web Applications Solutions",
+        description: "Dynamic and engaging web applications",
+      },
+      {
+        icon: <Wrench className="w-6 h-6" aria-label="Wrench Icon" />,
+        title: "Ongoing Maintenance and Support",
+        description: "Continuous support to keep your website running smoothly",
+      },
+      {
+        icon: <Globe className="w-6 h-6" aria-label="Globe Icon" />,
+        title: "Multilingual Website Development",
+        description: "Reach global audiences with multi-language support",
+      },
+      {
+        icon: <Zap className="w-6 h-6" aria-label="Zap Icon" />,
+        title: "Performance Optimization",
+        description: "Lightning-fast websites with optimized load times",
+      },
+      {
+        icon: <Shield className="w-6 h-6" aria-label="Shield Icon" />,
+        title: "Advanced Security Implementation",
+        description: "Robust security measures to protect your digital assets",
+      },
+      {
+        icon: <Palette className="w-6 h-6" aria-label="Palette Icon" />,
+        title: "Custom UI/UX Design",
+        description: "Unique, user-centered designs tailored to your brand",
+      },
+      {
+        icon: <Rocket className="w-6 h-6" aria-label="Rocket Icon" />,
+        title: "E-commerce Solutions",
+        description:
+          "Powerful online stores with seamless checkout experiences",
+      },
+    ],
+    []
+  );
 
-function MainFeatures() {
   return (
     <section className="min-h-screen flex items-center justify-center w-full py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -96,6 +102,6 @@ function MainFeatures() {
       </div>
     </section>
   );
-}
+});
 
 export default MainFeatures;
