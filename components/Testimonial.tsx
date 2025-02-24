@@ -22,16 +22,16 @@ const testimonials: TestimonialType[] = [
     name: "Anuj Panchal",
     title: "Founder of Anmol Poultry Farm",
     quote:
-      "Maurya Codesphere has been instrumental in transforming our online presence. Their team’s expertise in web development and design resulted in a visually stunning and user-friendly e-commerce platform. Our online sales have skyrocketed, and we couldn’t be happier.",
+      "Maurya Codesphere has revolutionized our poultry e-commerce business. Their expertise in web development and design resulted in a visually appealing and highly functional online store. Our digital transformation has led to a significant increase in online sales, and we couldn't be more satisfied with their service.",
     date: "03 January 2025",
     image: "https://picsum.photos/120/120?random=1",
   },
   {
     id: 2,
-    name: "Harikesh Kashyap",
-    title: "Founder of Ai Digital Info",
+    name: "Danial John",
+    title: "Founder of Modern Agency",
     quote:
-      "Maurya Codesphere designed and developed a captivating web portal for showcasing our real estate listings. The platform is visually appealing and easy to navigate, allowing potential buyers to find their dream homes effortlessly. LandFree’s expertise in the real estate industry is unmatched.",
+      "Maurya Codesphere built an impressive real estate portal tailored to our agency’s needs. The platform’s sleek design and intuitive navigation make it easy for potential buyers to explore property listings. Their deep understanding of the real estate industry has helped us attract more clients effortlessly.",
     date: "15 August 2024",
     image: "https://picsum.photos/120/120?random=2",
   },
@@ -40,7 +40,7 @@ const testimonials: TestimonialType[] = [
     name: "Vishal Dangi",
     title: "Founder of Somya Engineers",
     quote:
-      "Working with Maurya Codesphere was a breeze. They understood our vision for a mobile app that streamlined our food delivery service. The app they delivered exceeded our expectations, and our customers love the seamless ordering experience. LandFree is a trusted partner we highly recommend.",
+      "Collaborating with Maurya Codesphere was seamless. They developed a feature-rich mobile app for our engineering solutions, improving customer engagement and service efficiency. Their commitment to quality and innovation makes them a highly reliable tech partner.",
     date: "21 February 2024",
     image: "https://picsum.photos/120/120?random=3",
   },
@@ -164,9 +164,9 @@ const Testimonial: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
-          At LandFree, we take pride in delivering exceptional digital products
-          and services that drive success for our clients. Here’s what some of
-          our clients say.
+          At Maurya CodeSphere, we take pride in delivering exceptional digital
+          products and services that drive success for our clients. Here’s what
+          some of our clients say.
         </motion.p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial) => (
