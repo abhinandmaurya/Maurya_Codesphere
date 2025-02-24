@@ -9,11 +9,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://mauryacodesphere.com"),
   title: {
-    default: "Maurya Codesphere - Elevate Your Online Presence",
+    default: "Maurya Codesphere - Boost Your Web Presence", // 53 characters
     template: "%s | Maurya Codesphere",
   },
   description:
-    "Maurya Codesphere helps you build stunning, high-performance websites with ease. Elevate your online business today with our professional templates.",
+    "Maurya Codesphere creates stunning, fast websites with pro templates. Elevate your online business effortlessly.", // 155 characters
   keywords: [
     "business template",
     "landing page design",
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Maurya Codesphere - Elevate Your Online Presence",
+    title: "Maurya Codesphere - Boost Your Web Presence",
     description:
-      "Maurya Codesphere helps you build high-performance websites effortlessly. Grow your online business with our professional web templates.",
+      "Maurya Codesphere creates stunning, fast websites with pro templates to grow your business.",
     url: "https://mauryacodesphere.com",
     siteName: "Maurya Codesphere",
     images: [
@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Maurya Codesphere - Elevate Your Online Presence",
+    title: "Maurya Codesphere - Boost Your Web Presence",
     description:
-      "Maurya Codesphere simplifies web development with AI-powered solutions and modern design templates.",
+      "Fast, stunning websites with pro templates by Maurya Codesphere.",
     creator: "@MauryaCodesphere",
     images: ["https://mauryacodesphere.com/images/twitter-image.jpg"],
   },
@@ -105,8 +105,6 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href="https://mauryacodesphere.com" />
         <meta name="theme-color" content="#000000" />
-
-        {/* ✅ Optimized Font Loading Without onLoad Issue */}
         <link
           rel="preload"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
@@ -118,8 +116,6 @@ export default function RootLayout({
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
           />
         </noscript>
-
-        {/* ✅ Structured Data for Better SEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -141,7 +137,7 @@ export default function RootLayout({
               ],
               contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+1-555-555-5555",
+                telephone: "+91 9408609309",
                 contactType: "customer service",
                 availableLanguage: ["English"],
               },
@@ -149,10 +145,10 @@ export default function RootLayout({
                 "@type": "Place",
                 address: {
                   "@type": "PostalAddress",
-                  streetAddress: "Your Business Address",
-                  addressLocality: "City",
-                  postalCode: "ZIP Code",
-                  addressCountry: "Country",
+                  streetAddress: "Vatva",
+                  addressLocality: "Ahmedbad",
+                  postalCode: "382445",
+                  addressCountry: "India",
                 },
               },
             }),
