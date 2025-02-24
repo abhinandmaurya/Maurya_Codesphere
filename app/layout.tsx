@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AnimatedBackground } from "@/components/animated-background";
 
-const inter = Inter({ subsets: ["latin"], display: "swap" });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mauryacodesphere.com"),
@@ -13,17 +13,18 @@ export const metadata: Metadata = {
     template: "%s | Maurya Codesphere",
   },
   description:
-    "Maurya Codesphere offers cutting-edge, high-performance websites with AI-powered solutions. Build your digital empire today!",
+    "Maurya Codesphere helps you build stunning, high-performance websites with ease. Elevate your online business today with our professional templates.",
   keywords: [
-    "web development",
-    "AI-powered website",
+    "business template",
+    "landing page design",
+    "website development",
+    "AI-powered website builder",
     "SEO-friendly websites",
-    "custom business website",
-    "best website builder",
-    "modern web design",
-    "fast-loading websites",
-    "professional web templates",
-    "responsive website design",
+    "custom website development",
+    "responsive business website",
+    "modern web templates",
+    "professional website builder",
+    "best web design services",
   ],
   authors: [{ name: "Maurya Codesphere", url: "https://mauryacodesphere.com" }],
   creator: "Maurya Codesphere",
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   alternates: {
-    canonical: "https://mauryacodesphere.com",
+    canonical: "/",
     languages: {
       "en-US": "/en-US",
     },
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Maurya Codesphere - Elevate Your Online Presence",
     description:
-      "Build high-performance websites effortlessly with Maurya Codesphere’s AI-powered web solutions.",
+      "Maurya Codesphere helps you build high-performance websites effortlessly. Grow your online business with our professional web templates.",
     url: "https://mauryacodesphere.com",
     siteName: "Maurya Codesphere",
     images: [
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
         url: "https://mauryacodesphere.com/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Maurya Codesphere - AI-powered websites",
+        alt: "Maurya Codesphere - Professional Website Templates",
       },
     ],
     locale: "en_US",
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Maurya Codesphere - Elevate Your Online Presence",
     description:
-      "AI-driven, SEO-friendly website solutions to grow your online business with ease.",
+      "Maurya Codesphere simplifies web development with AI-powered solutions and modern design templates.",
     creator: "@MauryaCodesphere",
     images: ["https://mauryacodesphere.com/images/twitter-image.jpg"],
   },
@@ -80,11 +81,17 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
+    other: [
+      {
+        rel: "apple-touch-icon-precomposed",
+        url: "/apple-touch-icon-precomposed.png",
+      },
+    ],
   },
   manifest: "/site.webmanifest",
   verification: {
-    google: "your-google-site-verification-code",
-    yandex: "your-yandex-verification-code",
+    google: "google-site-verification-code",
+    yandex: "yandex-verification-code",
   },
 };
 
@@ -94,26 +101,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" dir="ltr" suppressHydrationWarning className="dark">
+    <html lang="en" suppressHydrationWarning className="dark">
       <head>
         <link rel="canonical" href="https://mauryacodesphere.com" />
         <meta name="theme-color" content="#000000" />
+
+        {/* ✅ Optimized Font Loading Without onLoad Issue */}
         <link
           rel="preload"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
           as="style"
-          onLoad={(event) => {
-            const link = event.target as HTMLLinkElement;
-            link.rel = "stylesheet";
-          }}
         />
-
         <noscript>
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
           />
         </noscript>
+
+        {/* ✅ Structured Data for Better SEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -161,9 +167,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AnimatedBackground />
-          <main className="relative z-10 flex min-h-screen flex-col">
+          <div className="relative z-10 flex min-h-screen flex-col">
             {children}
-          </main>
+          </div>
         </ThemeProvider>
       </body>
     </html>
